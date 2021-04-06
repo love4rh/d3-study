@@ -8,6 +8,10 @@ import { VirutalDataGraph } from './view/VirutalDataGraph.js';
 
 import { Activity0215 } from './view/Activity0215.js';
 
+import { VerticalBarChart } from './view/VerticalBarChart.js';
+import { DynamicUpdateChart } from './view/DynamicUpdateChart.js';
+import { ScatterChart } from './view/ScatterChart.js';
+
 import './App.css';
 
 
@@ -26,7 +30,10 @@ class App extends Component {
 
   render () {
     const { viewNo } = this.state;
-    const samples = ['working', 'HorizontalBarChart', 'ForceDirectedGraph', 'VirutalDataGraph', 'Activity0215'];
+    const samples = [
+      'working', 'HorizontalBarChart', 'ForceDirectedGraph', 'VirutalDataGraph', 'VerticalBarChart',
+      'Activity0215', 'DynamicUpdateChart', 'ScatterChart'
+    ];
 
     return (
       <div className="App">
@@ -39,7 +46,10 @@ class App extends Component {
         { viewNo === 1 && <HorizontalBarChart /> }
         { viewNo === 2 && <ForceDirectedGraph /> }
         { viewNo === 3 && <VirutalDataGraph /> }
-        { viewNo === 4 && <Activity0215 /> }
+        { viewNo === 4 && <VerticalBarChart /> }
+        { viewNo === 5 && <Activity0215 /> }
+        { viewNo === 6 && <DynamicUpdateChart /> }
+        { viewNo === 7 && <ScatterChart /> }
       </div>
     );
   }
