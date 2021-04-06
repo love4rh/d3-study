@@ -98,7 +98,7 @@ class DynamicUpdateChart extends Component {
     }
 
     updateDS3Chart = (data) => {
-      const { flag, chartElement } = this.state;
+      const { flag, chartElement, HEIGHT } = this.state;
       const { x, y, yLabel, xAxisGroup, yAxisGroup } = chartElement;
 
       const value = flag ? "profit" : "revenue";
@@ -122,17 +122,19 @@ class DynamicUpdateChart extends Component {
       yAxisGroup.transition(t).call(yAxisCall);
     
       // JOIN new data with old elements.
-      const rects = this._g.selectAll("circle")
+      const rects = this._g.selectAll("rect")
         .data(data, d => d.month);
     
       // EXIT old elements not present in new data.
       rects.exit()
         .attr("fill", "red")
         .transition(t)
-          .attr("cy", y(0))
+          //.attr("cy", y(0))
+          .attr("y", y(HEIGHT))
           .remove();
     
       // ENTER new elements present in new data...
+      /*
       rects.enter().append("circle")
         .attr("fill", "grey")
         .attr("cy", y(0))
@@ -142,7 +144,22 @@ class DynamicUpdateChart extends Component {
         .transition(t)
           .attr("cx", (d) => x(d.month) + (x.bandwidth() / 2))
           .attr("cy", d => y(d[value]));
-    
+      // */
+
+      //*
+      rects.enter().append("rect")
+        .attr("y", d => y(0))
+        .attr("x", (d) => x(d.month))
+        .attr("width", x.bandwidth())
+        .attr("height", 0)
+        .attr("fill", "grey")
+        // AND UPDATE old elements present in new data.
+        .merge(rects)
+        .transition(t)
+          .attr("y", d => y(d[value]))
+          .attr("height", d => HEIGHT - y(d[value]))
+        ;
+      // */
       yLabel.text(flag ? "Profit ($)" : "Revenue ($)");
     }
 

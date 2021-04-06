@@ -97,7 +97,7 @@ class VerticalBarChart extends Component {
         rects.enter().append("rect")
           .attr("y", d => y(d.revenue))
           .attr("x", (d) => x(d.month))
-          .attr("width", x.bandwidth)
+          .attr("width", x.bandwidth())
           .attr("height", d => HEIGHT - y(d.revenue))
           .attr("fill", "grey");
       });

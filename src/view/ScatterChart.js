@@ -15,7 +15,8 @@ class ScatterChart extends Component {
       this.state = {
         MARGIN, WIDTH, HEIGHT,
         flag: true,
-        chartElement: {}
+        chartElement: {},
+        time: 0
       };
 
       this._g = null;
@@ -194,6 +195,8 @@ class ScatterChart extends Component {
 
     handleGoing = () => {
       if( this._interval ) {
+        clearInterval(this._interval);
+        this._interval = null;
         return;
       }
 
@@ -202,8 +205,9 @@ class ScatterChart extends Component {
         if( time >= 214) {
           clearInterval(this._interval);
           this._interval = null;
+        } else {
+          this.updateDS3Chart( time + 1 );
         }
-        this.updateDS3Chart( time + 1 );
       }, 200);
     }
 
