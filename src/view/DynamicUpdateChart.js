@@ -105,7 +105,8 @@ class DynamicUpdateChart extends Component {
       const t = d3.transition().duration(750);
     
       x.domain(data.map(d => d.month));
-      y.domain([0, d3.max(data, d => d[value])]);
+      // y.domain([0, d3.max(data, d => d[value])]);
+      y.domain([0, 55000]);
     
       const xAxisCall = d3.axisBottom(x);
       xAxisGroup.transition(t).call(xAxisCall)
@@ -148,7 +149,7 @@ class DynamicUpdateChart extends Component {
 
       //*
       rects.enter().append("rect")
-        .attr("y", d => y(0))
+        .attr("y", y(0))
         .attr("x", (d) => x(d.month))
         .attr("width", x.bandwidth())
         .attr("height", 0)
