@@ -16,7 +16,9 @@ class DynamicUpdateChart extends Component {
         MARGIN, WIDTH, HEIGHT,
         flag: true,
         chartElement: {}
-      }  
+      };
+
+      this._chartDiv = React.createRef();
     }
     
     componentDidMount() {
@@ -32,7 +34,7 @@ class DynamicUpdateChart extends Component {
     initializeD3Area = () => {
       const { MARGIN, WIDTH, HEIGHT } = this.state;
 
-      const svg = d3.select("#d3-canvas").append("svg")
+      const svg = d3.select(this._chartDiv.current).append("svg")
         .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
         .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM);
 
@@ -166,7 +168,7 @@ class DynamicUpdateChart extends Component {
 
     render() {
       return (
-        <div id="d3-canvas" />
+        <div ref={this._chartDiv} />
       )
     }
 }
