@@ -13,6 +13,8 @@ import { DynamicUpdateChart } from './view/DynamicUpdateChart.js';
 import { ScatterChart } from './view/ScatterChart.js';
 import { LineTooltipChart } from './view/LineTooltipChart.js';
 
+import { NetworkChart } from './view/NetworkChart.js';
+
 import './App.css';
 
 
@@ -33,7 +35,7 @@ class App extends Component {
     const { viewNo } = this.state;
     const samples = [
       'working', 'HorizontalBarChart', 'ForceDirectedGraph', 'VirutalDataGraph', 'VerticalBarChart',
-      'Activity0215', 'DynamicUpdateChart', 'ScatterChart', 'LineTooltipChart'
+      'Activity0215', 'DynamicUpdateChart', 'ScatterChart', 'LineTooltipChart', 'NetworkChart'
     ];
 
     return (
@@ -52,6 +54,7 @@ class App extends Component {
         { viewNo === 6 && <DynamicUpdateChart /> }
         { viewNo === 7 && <ScatterChart /> }
         { viewNo === 8 && <LineTooltipChart /> }
+        { viewNo === 9 && <NetworkChart /> }
       </div>
     );
   }
