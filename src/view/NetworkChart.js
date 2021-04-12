@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import * as d3 from 'd3';
 
+
+
 const nodes = [
   { id: 1, title: 'node#1', group: 1, weight: 10 },
   { id: 2, title: 'node#2', group: 1, weight: 20 },
@@ -10,7 +12,8 @@ const nodes = [
   { id: 5, title: 'node#5', group: 2, weight: 20 },
   { id: 6, title: 'node#6', group: 2, weight: 30 },
   { id: 7, title: 'node#7', group: 2, weight: 20 },
-  { id: 8, title: 'node#8', group: 2, weight: 10 }
+  { id: 8, title: 'node#8', group: 2, weight: 10 },
+  { id: 999, title: 'alone node', group: 999, weight: 15 }
 ];
 
 // Link는 source와 target으로 지정해야 함
@@ -22,7 +25,6 @@ const links = [
   { source: 5, target: 7, weight: 100 },
   { source: 5, target: 8, weight: 1 }
 ];
-
 
 
 const drag = (simulation) => {
@@ -69,13 +71,14 @@ class NetworkChart extends Component {
     }
 
     initializeD3Area = () => {
-      const { width, height } = this.state;
+      const { height } = this.state;
+      const width = this._chartDiv.current.clientWidth;
       
       // see https://github.com/d3/d3-force
       const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => 1.5 * (d.source.weight + d.target.weight) ))
         // .force("collide", d3.forceCollide(20).strength(0.5))
-        .force("charge", d3.forceManyBody())
+        .force("charge", d3.forceManyBody().theta(0.5).distanceMax(200).distanceMin(50))
         .force("center", d3.forceCenter(width / 2, height / 2));
 
       const svg = d3.select(this._chartDiv.current)
@@ -107,6 +110,17 @@ class NetworkChart extends Component {
 
       node.append("title")
         .text(d => d.title);
+
+      const texts = svg.append("g")
+        .selectAll("text")
+        .data(nodes)
+        .join("text")
+        .attr("fill", "black")
+        .attr("x", d => d.x)
+        .attr("y", d => d.y + 6)
+        .attr("text-anchor", "middle")
+        .text(d => d.title)
+        .call(drag(simulation));
       
       simulation.on("tick", () => {
         link
@@ -118,12 +132,16 @@ class NetworkChart extends Component {
         node
           .attr("cx", (d) => d.x)
           .attr("cy", (d) => d.y);
+
+        texts
+          .attr("x", d => d.x)
+          .attr("y", d => d.y + 6);
       });
     }
 
     render() {
       return (
-        <div ref={this._chartDiv} />
+        <div ref={this._chartDiv} style={{ backgroundColor:'lightgray' }} />
       )
     }
 }
