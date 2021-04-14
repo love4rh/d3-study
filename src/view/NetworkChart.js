@@ -78,7 +78,7 @@ class NetworkChart extends Component {
       const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(d => 1.5 * (d.source.weight + d.target.weight) ))
         // .force("collide", d3.forceCollide(20).strength(0.5))
-        .force("charge", d3.forceManyBody().theta(0.5).distanceMax(200).distanceMin(50))
+        .force("charge", d3.forceManyBody().distanceMin(50))
         .force("center", d3.forceCenter(width / 2, height / 2));
 
       const svg = d3.select(this._chartDiv.current)
@@ -119,6 +119,7 @@ class NetworkChart extends Component {
         .attr("x", d => d.x)
         .attr("y", d => d.y + 6)
         .attr("text-anchor", "middle")
+        .attr("style", "cursor: pointer;")
         .text(d => d.title)
         .call(drag(simulation));
       
