@@ -163,6 +163,8 @@ class LineTooltipChart extends Component {
         };
         return s;
       }));
+
+      // yAxis.style("display", "none");
     
       d3.select(".focus").remove();
       d3.select(".overlay").remove();

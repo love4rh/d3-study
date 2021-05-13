@@ -76,7 +76,7 @@ class NetworkChart extends Component {
       
       // see https://github.com/d3/d3-force
       const simulation = d3.forceSimulation(nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(d => 1.5 * (d.source.weight + d.target.weight) ))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(d => 1.6 * (d.source.weight + d.target.weight) ))
         // .force("collide", d3.forceCollide(20).strength(0.5))
         .force("charge", d3.forceManyBody().distanceMin(50))
         .force("center", d3.forceCenter(width / 2, height / 2));
@@ -94,7 +94,10 @@ class NetworkChart extends Component {
         .selectAll("links")
         .data(links)
         .join("line")
-        .attr("stroke-width", (d) => Math.sqrt(d.weight));
+        .attr("stroke-width", (d) => Math.sqrt(d.weight))
+        .on('dblclick', (ev) => {
+          console.log('dblclick - link', ev);
+        });
       
       const scale = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -106,7 +109,12 @@ class NetworkChart extends Component {
         .join("circle")
         .attr("r", d => Math.max(10, d.weight))
         .attr("fill", d => scale(d.group))
-        .call(drag(simulation));
+        .attr("nodeid", d => d.id)
+        .call(drag(simulation))
+        .on('dblclick', (ev) => {
+          console.log('dblclick - node', ev);
+          console.log('dblclick - check', d3.select(ev.target).attr('nodeid'));
+        });
 
       node.append("title")
         .text(d => d.title);
@@ -120,8 +128,13 @@ class NetworkChart extends Component {
         .attr("y", d => d.y + 6)
         .attr("text-anchor", "middle")
         .attr("style", "cursor: pointer;")
+        .attr("nodeid", d => d.id)
         .text(d => d.title)
-        .call(drag(simulation));
+        .call(drag(simulation))
+        .on('dblclick', (ev) => {
+          console.log('dblclick - node', ev);
+          console.log('dblclick - check', d3.select(ev.target).attr('nodeid'));
+        });
       
       simulation.on("tick", () => {
         link
